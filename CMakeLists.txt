@@ -3,4 +3,9 @@ project(MercadoEnviosAzul)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(MercadoEnviosAzul main.cpp)
+add_executable(MercadoEnviosAzul main.cpp
+        GrupoA/ListaPendientes.cpp
+        GrupoA/ListaPendientes.hpp
+        GrupoA/NodoPendiente.cpp
+        GrupoA/NodoPendiente.hpp
+        GrupoA/Estados.hpp)

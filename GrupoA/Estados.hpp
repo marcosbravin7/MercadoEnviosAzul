@@ -1,0 +1,19 @@
+//
+// Created by xbm on 9/6/26.
+//
+
+#ifndef MERCADOENVIOSAZUL_ESTADOS_H
+#define MERCADOENVIOSAZUL_ESTADOS_H
+
+
+enum class Estados
+{
+    RECIBIDO,
+    CLASIFICADO,
+    EN_REPARTO,
+    REPROGRAMADO,
+    ENTREGADO
+};
+
+
+#endif //MERCADOENVIOSAZUL_ESTADOS_H

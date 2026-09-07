@@ -15,5 +15,11 @@ enum class Estados
     ENTREGADO
 };
 
+enum class NivelServicio
+{
+    EXPRESS     = 1,
+    PRIORITARIO = 2,
+    ESTANDAR    = 3
+};
 
 #endif //MERCADOENVIOSAZUL_ESTADOS_H

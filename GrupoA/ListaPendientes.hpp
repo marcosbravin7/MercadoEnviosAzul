@@ -30,10 +30,18 @@ class ListaPendientes
                                                 // estado actual? cantidad de visitas?
 
 
+                                                //Recursividad
+          ResumenZona resumenPorZona(const std::string& zona) const;
+
+          Envio* envioMasPesadoDeZona(const std::string& zona) const;
 
 
      private: //campos de la clase
            NodoPendiente* comienzo;
+
+        static ResumenZona resumirZona(NodoPendiente* nodo, const std::string& zona);
+
+        static Envio* masPesadoDeZona(NodoPendiente* nodo, const std::string& zona);
 
 
 
@@ -44,5 +52,11 @@ class ListaPendientes
 
 };
 
+struct ResumenZona  //Lo utilizamos porque agrupa los tres datos que necesitamos (Una funcion solamente retorna un elemento)
+{
+    int cantidad        = 0;
+    double pesoTotal    = 0.0;
+    int cantidadExpress = 0;
+};
 
 #endif //MERCADOENVIOSAZUL_LISTAPENDIENTES_H

@@ -1,6 +1,8 @@
 
 #include "ListaPendientes.hpp"
 
+#include "NodoPendiente.hpp"
+
 ////implementacion de los metodos del .hpp
 
 ListaPendientes::ListaPendientes() //Constructor
@@ -161,7 +163,56 @@ void ListaPendientes::registrar(int codSeguimiento, Estados nuevoEstado)
     //COMPLETAR <------------------------
 
 
+    //===================================================================================================
+    //Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//
+    //===================================================================================================
+  ResumenZona ListaPendientes::resumirZona(NodoPendiente* nodo, const std::string& zona){
+        if (nodo == nullptr) {
+            return ResumenZona {0,0.0,0}; //Caso Base (Devuelve neutro)
+        }
+    }
+
+        ResumenZona r = resumirZona(nodo->siguiente, zona); //Llamada recutsiva
+
+        Envio* e = nodo->envio;
+        if (e->getZona()==zona)
+        {
+            r.cantidad += 1;                                //SUMA 1 A LLA CANTIDAD EN ESA ZONA
+            r.pesoTotal += e->getPeso();                    //sUMA EL PESO DEL PAQUETE  
+            if (e->getNivel()== NivelServicio::EXPRESS) {   //SE ASEGURA QUE EL PAQUETE SEA EXPRESS Y AHI SUMA A LA CANT DE PAQUETES EXPRESS
+                r.cantidadExpress += 1;
+            }
+        }
+    return r;
+}
+
+ResumenZona ListaPendientes::resumenPorZona(const std::string& zona) const    //Se encarga de conseguir el Nodo Cabeza para comenzar la recursividad
+{
+    return resumirZona(comienzo, zona);
 }
 
 
+//========================
+//Desafio Adicional
+//========================
+Envio* ListaPendientes::masPesadoDeZona(NodoPendiente* nodo, const std::string& zona)
+{
+    if (nodo == nullptr)
+    {
+        return nullptr;                                  // CASO BASE
+    }
+
+    Envio* mejorDelResto = masPesadoDeZona(nodo->siguiente, zona);
+    Envio* actual = nodo->envio;
+
+    if (actual->getZona() != zona) return mejorDelResto;
+    if (mejorDelResto == nullptr)  return actual;
+
+    return (actual->getPeso() >= mejorDelResto->getPeso()) ? actual : mejorDelResto; //El >= es para que en caso de empate gane el primero que ingreso
+}
+
+Envio* ListaPendientes::envioMasPesadoDeZona(const std::string& zona) const
+{
+    return masPesadoDeZona(comienzo, zona);
+}
 

@@ -1,4 +1,9 @@
-lass CentroDeDistribucion {
+#include <iostream>
+#include <string>
+
+
+
+class CentroDeDistribucion {
 private:
     ListaPendientes pendientes;
     Envio** registro;
@@ -21,46 +26,23 @@ private:
 public:
     CentroDeDistribucion (int capacidadInicial) : capacidad (capacidadInicial), cantidadRegistrados (0) {}
 
-    ~CentroDeDistribucion () {
-        for (int i = 0; i < capacidad; i++) {
-            delete registro[i];
-        }
+    ~CentroDeDistribucion ();
 
-        delete[] registro;
-    }
+    void mostrarPendientes ();
 
-    void mostrarPendientes () {
-        pendientes.mostrar();
-    }
+    void registrarNuevoEnvio (std::string codigo, std::string destinatario, std::string zona, float peso, nivelDeServicio nivel);
 
-    void registrarNuevoEnvio (std::string codigo, std::string destinatario, std::string zona, float peso, nivelDeServicio nivel) {
-        if (cantidadRegistrados == capacidad) {
-            redimensionar();
-        }
+    //buscarEnvio
 
-        Envio* nuevo = new Envio*(codigo, destinatario, zona, peso, nivel);
+    void cambiarEstado (std::string codigo, Estados nuevoEstado);
 
-        registro[cantidadRegistrados] = nuevo;
-        cantidadRegistrados++;
+    void despacharProximoEnvio ();
 
-        pendientes.agregarPorPrioridad(nuevo);
+    void reprogramarEnvio(std::string codigo, std::string nuevaZona);
 
-        std::cout << "Envío " << codigo << " registrado correctamente." << std::endl;
-    }
+    void mostrarHistorial (std::string codigo);
 
-    //mostrarEnvios completar
-
-    //cambiarEstado completar
-
-    //despacharProximoEnvio completar
-
-    //reprogramarEnvio completar
-
-    //mostrarHistorial
-
-    //obtenerResumenRecursivo
-
-} 
+    void generarReporteRecursivoPorZona (std::string zona);
 
 
 };

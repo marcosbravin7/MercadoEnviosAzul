@@ -34,6 +34,7 @@ void CentroDeDistribucion:: resumenRecursivoPorZona (std::string zona) {
   ResumenZona reporte = pendientes.resumenPorZona(zona);
 
   std:: cout << "Resumen Recursivo Por Zona: \n";
+  std:: cout << "\nZona: " << zona << "\n";
   std:: cout << "Cantidad: " << reporte.cantidad <<"\n";
   std:: cout << "Peso: " << reporte.pesoTotal << " kg \n";
   std:: cout << "Express: " <<reporte.cantidadExpress << "\n";

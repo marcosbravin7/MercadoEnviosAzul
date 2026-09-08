@@ -14,6 +14,7 @@ public:
     HistorialDeMovimientos();
     ~HistorialDeMovimientos();
 
+
     // RF04 & RF07: Agregar un nuevo estado/movimiento al historial
     void agregarMovimiento(const std::string& estado, const std::string& observacion);
 

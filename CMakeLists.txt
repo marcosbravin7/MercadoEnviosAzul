@@ -15,4 +15,8 @@ add_executable(MercadoEnviosAzul main.cpp
         GrupoB/NodoMovimiento.hpp
         GrupoB/HistorialDeMovimientos.cpp
         GrupoB/HistorialDeMovimientos.hpp
-        GrupoC/Envio.cpp)
+        GrupoC/Envio.cpp
+        GrupoD/CentroDeDistribucion.hpp
+        GrupoD/CentroDeDistribucion.cpp
+        GrupoC/ListaDeEnvios.hpp
+        GrupoC/ListaDeEnvios.cpp)

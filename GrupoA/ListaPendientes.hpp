@@ -24,8 +24,6 @@ class ListaPendientes
 
           void reordenar(Envio* envio);
 
-           void registrar(int codSeguimiento, Estados nuevoEstado); //registra que cosa? el cambio de estado??
-
           void mostrar(); // de que forma muestra la lista? con un cout??
 
           NodoPendiente* buscar(std::string codSeguimiento);

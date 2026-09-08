@@ -3,6 +3,7 @@
 
 #include "ListaPendientes.hpp"
 #include "HistorialDeMovimientos.hpp"
+#include "ListaDeEnvios.hpp"
 
 class CentroDeDistribucion {
 private:

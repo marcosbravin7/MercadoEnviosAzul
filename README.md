@@ -3,13 +3,6 @@
 > 📦 Trabajo Práctico Integrador: **Estructuras de Datos y POO en C++**
 > Prototipo de consola para administrar paquetes que ingresan a un centro de distribución, son clasificados y despachados para su entrega.
 
-[![C++](https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://isocpp.org)
-[![Standard: C++17](https://img.shields.io/badge/Standard-C%2B%2B17-4385F5?style=for-the-badge)]()
-[![Compiler: g++](https://img.shields.io/badge/Compiler-g%2B%2B-A8B900?style=for-the-badge&logo=gnumake&logoColor=white)](https://gcc.gnu.org)
-[![Platform: Linux](https://img.shields.io/badge/Platform-Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)]()
-[![Status: En desarrollo](https://img.shields.io/badge/Status-En%20desarrollo-yellow?style=for-the-badge)]()
-[![Deadline: 5 sep 23:59 ARG](https://img.shields.io/badge/Deadline-5%20sep%2023%3A59%20ARG-red?style=for-the-badge)]()
-
 ## 📌 Info del TP
 
 | | |

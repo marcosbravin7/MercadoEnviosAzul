@@ -212,8 +212,7 @@ NodoPendiente* ListaPendientes::despachar(const std::string& codigoSeguimiento)
 
     // El nodo queda desvinculado.
     nodoDespachado->siguiente = nullptr;
-    nodoDespachado->envio->cambiarEstado(
-        Estados::DESPACHADO,"Envio despachado de la lista de pendientes");
+    nodoDespachado->envio->cambiarEstado(Estados::EN_REPARTO,"Envio despachado de la lista de pendientes");
 
     return nodoDespachado; //no estoy seguro que haya que devolver esto la verdad pero bue \(*_*)/
 }
@@ -234,7 +233,7 @@ void ListaPendientes::mostrar()
         std::cout<<"●Zona de entrega: "<<aux->envio->getZona()<< std::endl;
         std::cout<<"●Peso: "<<aux->envio->getPeso()<< std::endl;
         std::cout<<"●Nivel de servicio: "<< std::to_string(static_cast<int>(aux->envio->getNivel()))<< std::endl;
-        std::cout<<"●Estado actual: "<<aux->envio->getEstado()<< std::endl;
+        std::cout<<"●Estado actual: "<<aux->envio->getEstadoTexto()<< std::endl;
         std::cout<<"●Cantidad de intentos de entrega: "<<aux->envio->getIntentos()<< std::endl;
         std::cout<<""<< std::endl;
         std::cout<<""<< std::endl;

@@ -168,7 +168,7 @@ void ListaPendientes::registrar(int codSeguimiento, Estados nuevoEstado)
     //===================================================================================================
   ResumenZona ListaPendientes::resumirZona(NodoPendiente* nodo, const std::string& zona){
         if (nodo == nullptr) {
-            return ResumenZona {0,0.0,0}; //Caso Base (Devuelve neutro)
+            return ResumenZona { 0,0.0,0}; //Caso Base (Devuelve neutro)
         }
 
         ResumenZona r = resumirZona(nodo->siguiente, zona); //Llamada recutsiva

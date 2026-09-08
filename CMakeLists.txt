@@ -1,22 +1,9 @@
-cmake_minimum_required(VERSION 4.3)
-project(MercadoEnviosAzul)
+cmake_minimum_required(VERSION 3.20)
+project(HubFlow)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 
-add_executable(MercadoEnviosAzul main.cpp
-        GrupoA/ListaPendientes.cpp
-        GrupoA/ListaPendientes.hpp
-        GrupoA/NodoPendiente.cpp
-        GrupoA/NodoPendiente.hpp
-        GrupoA/Estados.hpp
-        GrupoB/Movimiento.cpp
-        GrupoB/Movimiento.hpp
-        GrupoB/NodoMovimiento.cpp
-        GrupoB/NodoMovimiento.hpp
-        GrupoB/HistorialDeMovimientos.cpp
-        GrupoB/HistorialDeMovimientos.hpp
-        GrupoC/Envio.cpp
-        GrupoD/CentroDeDistribucion.hpp
-        GrupoD/CentroDeDistribucion.cpp
-        GrupoC/ListaDeEnvios.hpp
-        GrupoC/ListaDeEnvios.cpp)
+add_executable(HubFlow main.cpp)
+
+add_executable(HubFlowTests tests/test_main.cpp)
+target_include_directories(HubFlowTests PRIVATE ${CMAKE_SOURCE_DIR})

@@ -1,157 +1,128 @@
+#include "CentroDeDistribucion.h"
 #include <iostream>
 #include <string>
-
-#include "CentroDeDistribucion.hpp"
-
-void mostrarMenu();
-void cargarDataSetInicial(CentroDeDistribucion centro);
-
-int main () {
-  //inciializar centro
-
-  int opcion = -1;
-
-    while (opcion != 0) {
-        mostrarMenu();
-        std::cin >> opcion;
-
-        switch (opcion) {
-            case 1: {
-                std:: cout << "Envíos pendientes \n";
-                centro.mostrarPendientes();
-                break;
-            }
-
-            case 2: {
-                std:: cout << "Registrar nuevo envío \n";
-                std:: string codigo, destinatario, zona;
-                float peso;
-                int nivelServ;
-
-                std::cout << "Ingrese codigo: ";
-                std::getline(std::cin, codigo);
-                std::cout << "Ingrese destinatario: ";
-                std::getline(std::cin, destinatario);
-                std::cout << "Ingrese zona: ";
-                std::getline(std::cin, zona);
-                std::cout << "Ingrese peso: ";
-                std::cin >> peso;
-                std::cout << "Ingrese nivel de servicio: ";
-                std::cin >> nivelServ;
-
-                centro.registrarNuevoEnvio(codigo, destinatario, zona, peso, nivelServ);
-                break;
-            }
-
-            case 3: {
-                std::cout << "Buscar envío \n";
-                std::string codigo;
-                std::cout << "Ingrese el codigo a buscar: ";
-                std::getline(std::cin, codigo);
-
-                centro.buscarEnvio(codigo);
-                break;
-            }
-
-            case 4: {
-                std:: cout << "Cambiar estado de envio \n";
-                std:: string codigo, observacion;
-                int estado;
-
-                std::cout << "Codigo del envio: ";
-                std::getline(std::cin, codigo);
-                std::cout << "Ingrese el nuevo estado: ";
-                std::cin >> estado;
-                std::cout << "Observacion: ";
-                std::getline(std::cin, observacion);
-
-                centro.cambiarEstado(codigo, estado, observacion);
-                break;
-            }
-
-            case 5: {
-                std::cout << "Despachar proximo envio \n";
-                centro.despacharProximoEnvio();
-                break;
-            }
-
-            case 6: {
-                std:: cout << "Reprogramar envio \n";
-                std:: string codigo, nuevaZona;
-                std:: cout << "Ingrese codigo: ";
-                std::getline(std::cin, codigo);
-                std:: cout << "Ingrese nueva zona de entrega: ";
-                std::getline(std::cin, nuevaZona);
-
-                centro.reprogramarEnvio(codigo, nuevaZona);
-                break;
-            }
-
-            case 7: {
-                std::cout << "Mostrar historial \n";
-                std::string codigo;
-                std:: cout << "Ingrese codigo del envío: ";
-                std::getline(std::cin, codigo);
-
-                centro.mostrarHistorial(codigo);
-                break;
-            }
-
-            case 8: {
-                std::cout<< "Generar reporte por zona \n";
-                std::string zona;
-                std::cout << "Ingrese zona a consultar: ";
-                std::getline(std::cin, zona);
-
-                centro.generarReporteReursivoPorZona(zona);
-                break;
-            }
-
-            case 9: {
-                std::cout << "Finalizar entrega \n";
-                std::string codigo, observacion;
-                std:: cout << "Ingrese codigo del envío: ";
-                std::getline(std::cin, codigo);
-                std::cout << "Observación de la entrega: ";
-                std::getline(std::cin, observacion);
-
-                centro.finalizaEntrega(codigo, observacion);
-                break;
-            }
-
-            default: {
-                std:: cout << "Opcion no valida" << std::endl;
-                break;
-            }
-        }
-      return 0;
-}
+#include <limits>
+using namespace std;
 
 void mostrarMenu() {
-    std::cout << "========== CENTRO DE DISTRIBUCION  ==========" << std::endl;
-    std::cout << "==========   MERCADO ENVIOS AZUL   ==========" << std::endl;
-    std::cout << std::endl;
-    std::cout << "1. Mostrar envíos pendientes" << std::endl;
-    std::cout << "2. Registrar nuevo envío" << std::endl;
-    std::cout << "3. Buscar envío" << std::endl;
-    std::cout << "4. Cambiar estado" << std::endl;
-    std::cout << "5. Despachar próximo envío" << std::endl;
-    std::cout << "6. Reprogramar envío" << std::endl;
-    std::cout << "7. Mostrar historial" << std::endl;
-    std::cout << "8. Obtener resumen recursivo por zona" << std::endl;
-    std::cout << "9. Finalizar" << std::endl;
-    std::cout << std::endl;
-    std::cout << "Seleccione una opción: " << std::endl;
+    cout << "\n========== HUBFLOW ==========\n";
+    cout << "1. Mostrar envios pendientes\n";
+    cout << "2. Registrar nuevo envio\n";
+    cout << "3. Buscar envio\n";
+    cout << "4. Cambiar estado\n";
+    cout << "5. Despachar proximo envio\n";
+    cout << "6. Reprogramar envio\n";
+    cout << "7. Mostrar historial\n";
+    cout << "8. Resumen recursivo por zona\n";
+    cout << "9. Envio mas pesado por zona (desafio)\n";
+    cout << "10. Finalizar\n";
+    cout << "Opcion: ";
 }
 
-void cargarDatasetInicial(CentroDeDistribucion& centro) {
-    centro.registrarNuevoEnvio("PCK-1001","Ana Torres","CENTRO", 1.20, "ESTANDAR");
-    centro.registrarNuevoEnvio("PCK-1002","Bruno Diaz","NORTE", 0.75, "EXPRESS");
-    centro.registrarNuevoEnvio("PCK-1003","Carla Ruiz","SUR", 4.10, "PRIORITARIO");
-    centro.registrarNuevoEnvio("PCK-1004","Diego López","CENTRO", 2.30, "ESTANDAR");
-    centro.registrarNuevoEnvio("PCK-1005","Elena Castro","NORTE", 1.90, "PRIORITARIO");
-    centro.registrarNuevoEnvio("PCK-1006","Franco Gómez","SUR", 0.50, "EXPRESS");
-    centro.registrarNuevoEnvio("PCK-1007","Gabriela Soto","CENTRO", 6.20, "ESTANDAR");
-    centro.registrarNuevoEnvio("PCK-1008","Hugo Pérez","NORTE", 3.40, "PRIORITARIO");
+void cargarDataset(CentroDeDistribucion& cd) {
+    cd.registrarEnvio("PKG-1001", "Ana Torres",    "CENTRO", 1.20, NivelServicio::ESTANDAR);
+    cd.registrarEnvio("PKG-1002", "Bruno Diaz",    "NORTE",  0.75, NivelServicio::EXPRESS);
+    cd.registrarEnvio("PKG-1003", "Carla Ruiz",    "SUR",    4.10, NivelServicio::PRIORITARIO);
+    cd.registrarEnvio("PKG-1004", "Diego Lopez",   "CENTRO", 2.30, NivelServicio::ESTANDAR);
+    cd.registrarEnvio("PKG-1005", "Elena Castro",  "NORTE",  1.90, NivelServicio::PRIORITARIO);
+    cd.registrarEnvio("PKG-1006", "Franco Gomez",  "SUR",    0.50, NivelServicio::EXPRESS);
+    cd.registrarEnvio("PKG-1007", "Gabriela Soto", "CENTRO", 6.20, NivelServicio::ESTANDAR);
+    cd.registrarEnvio("PKG-1008", "Hugo Perez",    "NORTE",  3.40, NivelServicio::PRIORITARIO);
+}
 
+int main() {
+    CentroDeDistribucion cd;
+
+    cout << "Cargando dataset inicial...\n";
+    cargarDataset(cd);
+
+    int opcion;
+    do {
+        mostrarMenu();
+        cin >> opcion;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Opcion invalida.\n";
+            continue;
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (opcion == 1) {
+            cd.mostrarPendientes();
+
+        } else if (opcion == 2) {
+            string cod, dest, zona;
+            double peso;
+            int nivelOpcion;
+            NivelServicio nivel;
+            cout << "Codigo: "; getline(cin, cod);
+            cout << "Destinatario: "; getline(cin, dest);
+            cout << "Zona: "; getline(cin, zona);
+            cout << "Peso (kg): "; cin >> peso;
+            cout << "Nivel (1=EXPRESS, 2=PRIORITARIO, 3=ESTANDAR): "; cin >> nivelOpcion;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            if (!intANivel(nivelOpcion, nivel)) {
+                cout << "Nivel invalido.\n";
+                continue;
+            }
+            cd.registrarEnvio(cod, dest, zona, peso, nivel);
+
+        } else if (opcion == 3) {
+            string cod;
+            cout << "Codigo: "; getline(cin, cod);
+            cd.buscarEnvio(cod);
+
+        } else if (opcion == 4) {
+            string cod, obs;
+            int estOpcion;
+            Estado est;
+            cout << "Codigo: "; getline(cin, cod);
+            cout << "Nuevo estado (0=RECIBIDO 1=CLASIFICADO 2=EN_REPARTO 3=REPROGRAMADO 4=ENTREGADO): ";
+            cin >> estOpcion;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            if (!intAEstado(estOpcion, est)) {
+                cout << "Estado invalido.\n";
+                continue;
+            }
+            cout << "Observacion: "; getline(cin, obs);
+            cd.cambiarEstado(cod, est, obs);
+
+        } else if (opcion == 5) {
+            cd.despacharProximo();
+
+        } else if (opcion == 6) {
+            string cod, motivo;
+            cout << "Codigo: "; getline(cin, cod);
+            cout << "Motivo: "; getline(cin, motivo);
+            cd.reprogramarEnvio(cod, motivo);
+
+        } else if (opcion == 7) {
+            string cod;
+            cout << "Codigo: "; getline(cin, cod);
+            cd.mostrarHistorial(cod);
+
+        } else if (opcion == 8) {
+            string zona;
+            cout << "Zona (NORTE/SUR/CENTRO): "; getline(cin, zona);
+            cd.resumenZona(zona);
+
+        } else if (opcion == 9) {
+            string zona;
+            cout << "Zona (NORTE/SUR/CENTRO): "; getline(cin, zona);
+            cd.envioMasPesadoDeZona(zona);
+
+        } else if (opcion == 10) {
+            cout << "Finalizando... liberando memoria.\n";
+
+        } else {
+            cout << "Opcion invalida.\n";
+        }
+
+    } while (opcion != 10);
+
+    return 0;
+    // Al salir de main, ~CentroDeDistribucion() libera todo en cascada:
+    // ~ListaDeEnvios() destruye cada Envio (y su historial), y
+    // ~ListaPendientes() destruye sus propios nodos.
 }

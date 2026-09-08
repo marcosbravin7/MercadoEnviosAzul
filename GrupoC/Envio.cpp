@@ -18,13 +18,12 @@ Envio::Envio(const std::string& cod,
       zona(zn),
       peso(pes),
       nivel(niv),
-      estado("RECIBIDO"),
+      estado(Estados::RECIBIDO),
       intentos(0),
-      historial(new HistorialDeMovimientos())
-{
-    historial->agregarMovimiento("RECIBIDO", "Ingreso al centro de distribucion");
+      historial(new HistorialDeMovimientos()) {
+    historial->agregarMovimiento(estadoATexto(Estados::RECIBIDO),
+                             "Ingreso al centro de distribucion");
 }
-
 // Borrado en cascada: destruir el envio destruye su historial,
 // que destruye sus nodos, y cada nodo destruye su Movimiento.
 Envio::~Envio()
@@ -32,11 +31,25 @@ Envio::~Envio()
     delete historial;
 }
 
-void Envio::cambiarEstado(const std::string& nuevoEstado,
-                          const std::string& observacion)
+    // Convierte el enum a texto para el historial de Grupo B.
+    std::string Envio::estadoATexto(Estados e)
+{
+    switch (e)
+    {
+        case Estados::RECIBIDO:     return "RECIBIDO";
+        case Estados::CLASIFICADO:  return "CLASIFICADO";
+        case Estados::EN_REPARTO:   return "EN_REPARTO";
+        case Estados::REPROGRAMADO: return "REPROGRAMADO";
+        case Estados::ENTREGADO:    return "ENTREGADO";
+    }
+    return "DESCONOCIDO";
+}
+
+    void Envio::cambiarEstado(Estados nuevoEstado,
+                              const std::string& observacion)
 {
     estado = nuevoEstado;
-    historial->agregarMovimiento(nuevoEstado, observacion);
+    historial->agregarMovimiento(estadoATexto(nuevoEstado), observacion);
 }
 
 void Envio::mostrarHistorialCronologico() const { historial->mostrarCronologico(); }
@@ -52,7 +65,7 @@ void Envio::mostrar() const
               << " | " << zona
               << " | " << std::fixed << std::setprecision(2) << peso << " kg"
               << " | " << nivelTexto
-              << " | " << estado
+              << " | " << estadoATexto(estado)
               << " | intentos: " << intentos
               << std::endl;
 }

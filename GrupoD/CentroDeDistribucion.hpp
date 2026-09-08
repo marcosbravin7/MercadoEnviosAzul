@@ -3,6 +3,7 @@
 
 #include "ListaPendientes.hpp"
 #include "HistorialDeMovimientos.hpp"
+#include "ListaDeEnvios.hpp"
 
 class CentroDeDistribucion {
 private:
@@ -30,12 +31,7 @@ private:
     }
 
 public:
-    CentroDeDistribucion (int capacidadInicial = 10) : capacidad (capacidadInicial), cantidadRegistrados (0) {
-        registro = new Envio*[capacidad];
-        for (int i = 0; i < capacidad; i++) {
-            registro[i] = nullptr;
-        }
-    }
+    CentroDeDistribucion ();
 
     ~CentroDeDistribucion () ;
 

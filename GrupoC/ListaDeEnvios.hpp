@@ -1,10 +1,10 @@
 //
 // Created by santiago on 7/9/26.
 //
-
 #include <string>
 #include "Envio.hpp"
-
+#ifndef MERCADOENVIOSAZUL_LISTADEENVIOS_H
+#define MERCADOENVIOSAZUL_LISTADEENVIOS_H
 // ============================================================
 //  NODO ENVIO
 //  Nodo de la lista general. Solo estructura: apunta al envio

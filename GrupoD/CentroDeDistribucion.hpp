@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 
-#inclue "ListaPendientes.hpp"
+#include "ListaPendientes.hpp"
+#include "HistorialDeMovimientos.hpp"
 
 class CentroDeDistribucion {
 private:

@@ -8,4 +8,10 @@ add_executable(MercadoEnviosAzul main.cpp
         GrupoA/ListaPendientes.hpp
         GrupoA/NodoPendiente.cpp
         GrupoA/NodoPendiente.hpp
-        GrupoA/Estados.hpp)
+        GrupoA/Estados.hpp
+        GrupoB/Movimiento.cpp
+        GrupoB/Movimiento.hpp
+        GrupoB/NodoMovimiento.cpp
+        GrupoB/NodoMovimiento.hpp
+        GrupoB/HistorialDeMovimientos.cpp
+        GrupoB/HistorialDeMovimientos.hpp)

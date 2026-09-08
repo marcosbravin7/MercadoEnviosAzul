@@ -6,6 +6,12 @@
 #include "GrupoA/NodoPendiente.hpp"
 #include "Estados.hpp"
 
+struct ResumenZona  //Lo utilizamos porque agrupa los tres datos que necesitamos (Una funcion solamente retorna un elemento)
+{
+    int cantidad        = 0;
+    double pesoTotal    = 0.0;
+    int cantidadExpress = 0;
+};
 
 class ListaPendientes
 {
@@ -52,11 +58,5 @@ class ListaPendientes
 
 };
 
-struct ResumenZona  //Lo utilizamos porque agrupa los tres datos que necesitamos (Una funcion solamente retorna un elemento)
-{
-    int cantidad        = 0;
-    double pesoTotal    = 0.0;
-    int cantidadExpress = 0;
-};
 
 #endif //MERCADOENVIOSAZUL_LISTAPENDIENTES_H

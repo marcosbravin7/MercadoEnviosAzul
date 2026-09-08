@@ -3,8 +3,8 @@
 #define MERCADOENVIOSAZUL_LISTAPENDIENTES_H
 #include <iostream>
 #include <string>
-#include "GrupoA/NodoPendiente.hpp"
 #include "Estados.hpp"
+#include "NodoPendiente.hpp"
 
 struct ResumenZona  //Lo utilizamos porque agrupa los tres datos que necesitamos (Una funcion solamente retorna un elemento)
 {
@@ -20,26 +20,29 @@ class ListaPendientes
           ~ListaPendientes(); //destructor
 
            //Metodos:
-          void agregarPaquete(int codSeg,  std::string destinat,  std::string zonaEntrega, int peso, int nivelserv);
+          void agregarPaquete(Envio* envio);
 
-          void registrar(int codSeguimiento, Estados nuevoEstado); //registra que cosa? el cambio de estado??
+          void reordenar(Envio* envio);
+
+           void registrar(int codSeguimiento, Estados nuevoEstado); //registra que cosa? el cambio de estado??
 
           void mostrar(); // de que forma muestra la lista? con un cout??
 
-          NodoPendiente* buscar(int codSeguimiento);
+          NodoPendiente* buscar(std::string codSeguimiento);
 
-          NodoPendiente* despachar(int codSeguimiento);//despacharr implica buscar el nodo y eliminarlo de la lsita de pendientes
+          NodoPendiente* despachar(const std::string& codigoSeguimiento);//despacharr implica buscar el nodo y eliminarlo de la lsita de pendientes
                                                        // Ademas cambiar de estado que cosa??
                                                        // estado actual? cantidad de visitas?
 
-          void reprogramar(int codSeguimiento); //reprogramar implica cambiar de estado que cosa??
-                                                // estado actual? cantidad de visitas?
+          void reprogramar(Envio* envio,Estados nuevoEstado, std::string observacion); //
 
 
                                                 //Recursividad
           ResumenZona resumenPorZona(const std::string& zona) const;
 
           Envio* envioMasPesadoDeZona(const std::string& zona) const;
+
+
 
 
      private: //campos de la clase

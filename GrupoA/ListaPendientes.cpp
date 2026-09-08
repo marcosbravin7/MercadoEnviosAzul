@@ -2,6 +2,7 @@
 #include "ListaPendientes.hpp"
 
 #include "NodoPendiente.hpp"
+#include <stdexcept>
 
 ////implementacion de los metodos del .hpp
 
@@ -31,35 +32,98 @@ ListaPendientes::~ListaPendientes() //Destructor
 
 //Metodo para agregar un paquete a la lista, segun el orden de prioridad
 
-void ListaPendientes::agregarPaquete(int codSeg,  std::string destinat,  std::string zonaEntrega, int peso, int nivelserv)
+void ListaPendientes::agregarPaquete(Envio* envio)
 {
-    NodoPendiente* nuevoPaquete= new NodoPendiente(codSeg, destinat, zonaEntrega, peso, nivelserv);
+    NodoPendiente* nuevoPaquete = new NodoPendiente(envio);
 
-    //ingresa el paquete segun el orden de prioridad
-    // EXPRESS(1) >PRIORITARIO(2)>ESTANDAR(3)
-    if (nivelserv==1) //CASO 1: El paquete es prioridad express,se ingresa al principio de la lista
+    // Los niveles tienen el valor numerico de su prioridad:
+    // EXPRESS (1), PRIORITARIO (2), ESTANDAR (3).
+    // Se inserta despues de los envios de igual prioridad para
+    // conservar el orden de llegada.
+    if (comienzo == nullptr or ((envio->getNivel()) < (comienzo->envio->getNivel())))
     {
-        nuevoPaquete->siguiente=comienzo;
-        comienzo=nuevoPaquete;
+        nuevoPaquete->siguiente = comienzo;
+        comienzo = nuevoPaquete;
+        return;
+    }
+
+    NodoPendiente* actual = comienzo;
+    while (actual->siguiente != nullptr && (actual->siguiente->envio->getNivel() <= (envio->getNivel())))
+    {
+        actual = actual->siguiente;
+    }
+
+    nuevoPaquete->siguiente = actual->siguiente;
+    actual->siguiente = nuevoPaquete;
+}
+
+void ListaPendientes::reordenar(Envio* envio) //realmente seria mas facil si fuese doblemente enlazada
+{
+    // Si se introduce una refencia nula no hace nada, quizas deberia tirar un error?
+    if (envio == nullptr)
+    {
+        return;
+    }
+
+
+    NivelServicio prioridadEnvio = envio->getNivel();
+
+    // Buscamos el nodo que contiene el envio y el nodo anterior.
+    NodoPendiente* nodoAnterior = nullptr;
+    NodoPendiente* nodoReordenar = comienzo;
+
+    while (nodoReordenar != nullptr && nodoReordenar->envio != envio)
+    {
+        nodoAnterior = nodoReordenar;
+        nodoReordenar = nodoReordenar->siguiente;
+    }
+
+    // Si el envio no esta en la lista, no hay nada para reordenar.
+    if (nodoReordenar == nullptr)
+    {
+        return;
+    }
+
+    // Saco el nodo de su posicion actual.
+    if (nodoAnterior == nullptr)
+    {
+        comienzo = nodoReordenar->siguiente;
     }
     else
     {
-        //CASO 2: es prioridad prioritario, se ingrsa tipo en el medio de la lista
-        //CASO 3: es prioridad estandar, se ingresa al final de la lista
-        //COMPLETAR <------------------------
-
+        nodoAnterior->siguiente = nodoReordenar->siguiente;
     }
+
+    nodoReordenar->siguiente = nullptr;
+
+    // Si tiene mayor prioridad que el primer nodo, pasa a ser el primero.
+    if (comienzo == nullptr ||
+        prioridadEnvio < comienzo->envio->getNivel())
+    {
+        nodoReordenar->siguiente = comienzo;
+        comienzo = nodoReordenar;
+        return;
+    }
+
+    // Avanzo hasta encontrar el nodo anterior a la nueva posicion.
+    NodoPendiente* nodoAnteriorAInsertar = comienzo;
+    while (nodoAnteriorAInsertar->siguiente != nullptr &&
+           nodoAnteriorAInsertar->siguiente->envio->getNivel() <= prioridadEnvio)
+    {
+        nodoAnteriorAInsertar = nodoAnteriorAInsertar->siguiente;
+    }
+
+    // Insertamos el nodo en la posicion que corresponde.
+    nodoReordenar->siguiente = nodoAnteriorAInsertar->siguiente;
+    nodoAnteriorAInsertar->siguiente = nodoReordenar;
 }
-
-
-
 
 
 
 
 ///Metodo que busca un paquete a partir del codigo de seguimiento
 ///Deberia pasarle como parametro tambien una lista?
-NodoPendiente* ListaPendientes::buscar(int codSeguimiento)
+NodoPendiente* ListaPendientes::buscar(std::string codSeguimiento)
 {
     NodoPendiente* aux=comienzo;
     if (comienzo==nullptr)
@@ -71,7 +135,7 @@ NodoPendiente* ListaPendientes::buscar(int codSeguimiento)
         bool encontrado=false;
         while (aux!=nullptr)
         {
-            if (aux-> codigoDeSeguimiento==codSeguimiento) //Lo encontro, rome el ciclo
+            if (aux->envio->getCodigo()==codSeguimiento) //Lo encontro, rome el ciclo
             {
                 encontrado=true;
                 break;
@@ -83,7 +147,7 @@ NodoPendiente* ListaPendientes::buscar(int codSeguimiento)
         }
         if (encontrado==false)
         {
-            return nullptr //Que se retorna si no lo encuentra? un null o un throw error?
+            return nullptr;//Que se retorna si no lo encuentra? un null o un throw error?
         }
         else
         {
@@ -99,12 +163,10 @@ NodoPendiente* ListaPendientes::buscar(int codSeguimiento)
 //param el codigo de seguimiento
 
 
-void ListaPendientes::reprogramar(int codSeguimiento)
+void ListaPendientes::reprogramar(Envio* envio,Estados nuevoEstado, std::string observacion)
 {
-   NodoPendiente* nodoReprogramar= buscar(codSeguimiento); //trae el nodo solicitado
-    // reprograma lo que sea
-    //COMPLETAR <------------------------
-
+    envio->cambiarEstado(nuevoEstado,observacion);
+    reordenar(envio);
 }
 
 
@@ -117,12 +179,43 @@ void ListaPendientes::reprogramar(int codSeguimiento)
 // lo elimina de la lista pero lo retorna
 
 
-NodoPendiente* ListaPendientes::despachar(int codSeguimiento)
+NodoPendiente* ListaPendientes::despachar(const std::string& codigoSeguimiento)
 {
-    NodoPendiente* aux=comienzo;
-    NodoPendiente* nodoDespachado;
-    //COMPLETAR <------------------------
+    // buscamos el nodo por el codigo de seguimiento.
+    NodoPendiente* nodoDespachado = buscar(codigoSeguimiento);
 
+    // si no existe, no hay ningun envio para despachar (devuelvo nullptr, por ahi hay que poner un error?).
+    if (nodoDespachado == nullptr)
+    {
+        return nullptr;
+    }
+
+    // buscamos el nodo anterior para poder quitarlo de la lista. (limitacion de que es una lista simplemente enlazada,
+    // si fuese doblemente me ahorraria tener que recorrerla denuevo)
+    NodoPendiente* nodoAnterior = nullptr;
+    NodoPendiente* nodoRecorrido = comienzo;
+    while (nodoRecorrido != nodoDespachado)
+    {
+        nodoAnterior = nodoRecorrido;
+        nodoRecorrido = nodoRecorrido->siguiente;
+    }
+
+    // Lo quitamos de la lista de pendientes.
+    if (nodoAnterior == nullptr)
+    {
+        comienzo = nodoDespachado->siguiente;
+    }
+    else
+    {
+        nodoAnterior->siguiente = nodoDespachado->siguiente;
+    }
+
+    // El nodo queda desvinculado.
+    nodoDespachado->siguiente = nullptr;
+    nodoDespachado->envio->cambiarEstado(
+        Estados::DESPACHADO,"Envio despachado de la lista de pendientes");
+
+    return nodoDespachado; //no estoy seguro que haya que devolver esto la verdad pero bue \(*_*)/
 }
 
 
@@ -136,13 +229,13 @@ void ListaPendientes::mostrar()
     NodoPendiente* aux=comienzo;
     while (aux!=nullptr)  //recorre la lista mostrando la info de cada paquete
     {
-        std::cout<<"---Paquete: "<<aux->codigoDeSeguimiento<<" ---" std::endl;
-        std::cout<<"●Destinatario: "<<aux->destinatario<< std::endl;
-        std::cout<<"●Zona de entrega: "<<aux->zonaDeEntrega<< std::endl;
-        std::cout<<"●Peso: "<<aux->peso<< std::endl;
-        std::cout<<"●Nivel de servicio: "<<aux->nivelDeServicio<< std::endl;
-        std::cout<<"●Estado actual: "<<aux->estadoActual<< std::endl;
-        std::cout<<"●Cantidad de intentos de entrega: "<<aux->cantidadDeIntentosEntregal<< std::endl;
+        std::cout<<"---Paquete: "<<aux->envio->getCodigo()<<" ---" <<std::endl;
+        std::cout<<"●Destinatario: "<<aux->envio->getDestinatario()<< std::endl;
+        std::cout<<"●Zona de entrega: "<<aux->envio->getZona()<< std::endl;
+        std::cout<<"●Peso: "<<aux->envio->getPeso()<< std::endl;
+        std::cout<<"●Nivel de servicio: "<< std::to_string(static_cast<int>(aux->envio->getNivel()))<< std::endl;
+        std::cout<<"●Estado actual: "<<aux->envio->getEstado()<< std::endl;
+        std::cout<<"●Cantidad de intentos de entrega: "<<aux->envio->getIntentos()<< std::endl;
         std::cout<<""<< std::endl;
         std::cout<<""<< std::endl;
 
@@ -152,16 +245,6 @@ void ListaPendientes::mostrar()
 
 
 
-//metodo que sirve para cambiar el estado de un paquete??
-// la cantidad de visitas??
-
-
-void ListaPendientes::registrar(int codSeguimiento, Estados nuevoEstado)
-    {
-        NodoPendiente* nodoRegistrar= buscar(codSeguimiento);
-        nodoRegistrar-> estadoActual=nuevoEstado;
-        //COMPLETAR <------------------------
-    }
 
     //===================================================================================================
     //Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//
@@ -214,4 +297,3 @@ Envio* ListaPendientes::envioMasPesadoDeZona(const std::string& zona) const
 {
     return masPesadoDeZona(comienzo, zona);
 }
-

@@ -239,6 +239,24 @@ void testExtra_EntregaDirectaSacaDePendientes() {
               "El envio sigue siendo consultable con su estado ENTREGADO");
 }
 
+// ============================================================
+// Extra — RF06: reprogramar un envio que todavia esta pendiente (nunca se
+// despacho) no debe dejarlo duplicado en ListaPendientes.
+// ============================================================
+void testExtra_ReprogramarSinDespacharNoDuplica() {
+    cout << "\nExtra - Reprogramar sin despachar no duplica en pendientes\n";
+    CentroDeDistribucion cd;
+    cd.registrarEnvio("D1", "Dest", "CENTRO", 1.0, NivelServicio::ESTANDAR);
+
+    capturarSalida([&] { cd.reprogramarEnvio("D1", "Reprogramado sin despachar"); });
+
+    string salidaPendientes = capturarSalida([&] { cd.mostrarPendientes(); });
+    size_t primera = salidaPendientes.find("D1");
+    size_t segunda = (primera == string::npos) ? string::npos : salidaPendientes.find("D1", primera + 1);
+    chequear(primera != string::npos && segunda == string::npos,
+              "El envio aparece una sola vez en pendientes, no duplicado");
+}
+
 int main() {
     cout << "========== TESTS HUBFLOW ==========\n";
 
@@ -250,6 +268,7 @@ int main() {
     testCaso6_Recursividad();
     testCaso7_CasosLimite();
     testExtra_EntregaDirectaSacaDePendientes();
+    testExtra_ReprogramarSinDespacharNoDuplica();
 
     cout << "\n====================================\n";
     cout << (totalChequeos - chequeosFallidos) << "/" << totalChequeos << " checks OK\n";

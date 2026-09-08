@@ -69,13 +69,16 @@ public:
     }
 
     // RF06 — Reprogramar envio: vuelve a pendientes respetando su prioridad.
-    // Un envio ENTREGADO nunca puede volver a pendientes.
+    // Un envio ENTREGADO nunca puede volver a pendientes. Se lo saca primero
+    // de pendientes (remover es no-op si no estaba) para que reprogramar un
+    // envio que todavia no fue despachado no lo deje duplicado en la lista.
     void reprogramarEnvio(const string& codigo, const string& motivo) {
         Envio* e = registro.buscar(codigo);
         if (e == nullptr) { cout << "Envio no encontrado.\n"; return; }
         if (e->estaEntregado()) { cout << "El envio ya fue entregado, no puede reprogramarse.\n"; return; }
         e->sumarIntento();
         e->cambiarEstado(Estado::REPROGRAMADO, motivo);
+        pendientes.remover(e);
         pendientes.agregar(e);
         cout << "Envio " << codigo << " reprogramado (intento " << e->getIntentos() << ").\n";
     }

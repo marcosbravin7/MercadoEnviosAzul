@@ -170,7 +170,6 @@ void ListaPendientes::registrar(int codSeguimiento, Estados nuevoEstado)
         if (nodo == nullptr) {
             return ResumenZona {0,0.0,0}; //Caso Base (Devuelve neutro)
         }
-    }
 
         ResumenZona r = resumirZona(nodo->siguiente, zona); //Llamada recutsiva
 

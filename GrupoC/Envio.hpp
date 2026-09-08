@@ -27,7 +27,7 @@ class Envio
         std::string zona;
         double peso;
         NivelServicio nivel;
-        std::string estado;
+        Estados estado;
         int intentos;
         HistorialDeMovimientos* historial;   // memoria propia
 
@@ -50,17 +50,17 @@ class Envio
         const std::string& getZona()         const { return zona; }
         double getPeso()                     const { return peso; }
         NivelServicio getNivel()             const { return nivel; }
-        const std::string& getEstado()       const { return estado; }
+        std::string getEstadoTexto()         const { return estadoATexto(estado); }
         int getIntentos()                    const { return intentos; }
 
 
-        bool estaEntregado() const { return estado == "ENTREGADO"; }
+    bool estaEntregado() const { return estado == Estados::ENTREGADO; }
 
         //cambia el estado Y deja constancia en el historial.
         // Van siempre juntos, por eso es un solo metodo: asi es
         // imposible cambiar el estado y olvidarse del movimiento.
-        void cambiarEstado(const std::string& nuevoEstado,
-                           const std::string& observacion);
+        void cambiarEstado(Estados nuevoEstado,
+                const std::string& observacion);
 
         // suma un intento de entrega fallido
         void sumarIntento() { intentos++; }
@@ -71,6 +71,12 @@ class Envio
 
         // RF02: Codigo | Zona | Peso | Servicio | Estado | Intentos
         void mostrar() const;
+
+private:
+    // Puente hacia HistorialDeMovimientos, que guarda
+    // el estado como texto. Es privada y estatica: solo Envio la
+    // necesita, y asi no choca con nada de otro grupo.
+    static std::string estadoATexto(Estados e);
 };
 
 #endif //MERCADOENVIOSAZUL_ENVIO_H

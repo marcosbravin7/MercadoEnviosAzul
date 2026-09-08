@@ -157,11 +157,11 @@ void ListaPendientes::mostrar()
 
 
 void ListaPendientes::registrar(int codSeguimiento, Estados nuevoEstado)
-{
-    NodoPendiente* nodoRegistrar= buscar(codSeguimiento);
-    nodoRegistrar-> estadoActual=nuevoEstado;
-    //COMPLETAR <------------------------
-
+    {
+        NodoPendiente* nodoRegistrar= buscar(codSeguimiento);
+        nodoRegistrar-> estadoActual=nuevoEstado;
+        //COMPLETAR <------------------------
+    }
 
     //===================================================================================================
     //Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//Recursividad//

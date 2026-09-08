@@ -54,5 +54,6 @@ public:
 
     void generarReporteRecursivoPorZona (std::string zona);
 
+    void finalizarEntrega (std::string codigo);
 
 };
